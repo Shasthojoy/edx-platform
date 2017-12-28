@@ -1150,6 +1150,8 @@ class StudentAdminPage(PageObject):
     BACKGROUND_TASKS_BUTTON_NAME = None
     TASK_HISTORY_TABLE_NAME = None
 
+    RUNNING_TASK_CONTAINER = ".running-tasks-container"
+
     def is_browser_on_page(self):
         """
         Confirms student admin section is present
@@ -1226,6 +1228,19 @@ class StudentAdminPage(PageObject):
         Return Background Tasks History button.
         """
         return self._input_with_name(self.BACKGROUND_TASKS_BUTTON_NAME)
+
+    def wait_for_running_task_container(self):
+        """
+        Waits until the running task container is visible.
+        """
+        def check_func():
+            """
+            Promise Check Function
+            """
+            query = self.q(css="{}".format(self.RUNNING_TASK_CONTAINER))
+            return query.visible, query
+
+        return Promise(check_func, "Waiting for student admin running task container to be visible.").fulfill()
 
     def wait_for_task_history_table(self):
         """
